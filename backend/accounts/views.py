@@ -55,7 +55,7 @@ class UserLoginApiView(APIView):
                 token, created = Token.objects.get_or_create(user=user)
                 return Response({'token': token.key}, status=status.HTTP_200_OK)
             else:
-                return Response({'error': 'Invalid credentials'},
+                return Response({'error': 'Email and password do not match'},
                                 status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
