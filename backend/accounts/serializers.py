@@ -1,30 +1,36 @@
 from django.contrib.auth import get_user_model
-from rest_framework import serializers as rest_serializers
-from .validators import username_validator, email_validator
+from django.db import IntegrityError
+from rest_framework import serializers
+from .validators import password_validator
 
 User = get_user_model()
 
 
-class UserRegisterSerializer(rest_serializers.ModelSerializer):
+class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'email', 'password')
         extra_kwargs = {'password': {'write_only': True}}
 
-    @staticmethod
-    def validate_username(username):
-        username_validator(username)
-        return username
+    def validate(self, data):
+        password = data.get('password')
+        password_validator(password)
 
-    @staticmethod
-    def validate_email(email):
-        email_validator(email)
-        return email
+        return data
+    
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password']
+            )
+    
+        return user
 
 
-class UserLoginSerializer(rest_serializers.Serializer):
-    email = rest_serializers.CharField()
-    password = rest_serializers.CharField(write_only=True)
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.CharField()
+    password = serializers.CharField(write_only=True)
 
     def create(self, validated_data):
         pass

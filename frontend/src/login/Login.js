@@ -1,14 +1,28 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/authServices";
 
 export const Login = () => {
-    const [emailAddress, setEmailAddress] = useState("");
+    const navigate = useNavigate();
+
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const [error, setError] = useState("");
-    const isInvalid = password === "" || emailAddress === "";
+    const isInvalid = password === "" || email === "";
 
-    const handleLogin = () => {};
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+        try {
+            await login({ email, password });
+            navigate("/register");
+        } catch (error) {
+            setEmail("");
+            setPassword("");
+            setError(error.response.data.error);
+        }
+    };
 
     useEffect(() => {
         document.title = "Login - Clonestagram";
@@ -19,8 +33,8 @@ export const Login = () => {
             <div className="flex w-3/5">
                 <img
                     src="/images/iphone-with-profile.jpg"
-                    alt="iPhone with insta app"
-                    className="w-2/3 h-auto"
+                    alt="iPhone with Instagram app"
+                    className="w-10/12"
                 />
             </div>
             <div className="flex flex-col w-2/5">
@@ -32,6 +46,7 @@ export const Login = () => {
                             className="mt-2 w-6/12 mb-4"
                         />
                     </h1>
+
                     {error && (
                         <p className="mb-4 text-xs text-red-primary">{error}</p>
                     )}
@@ -41,36 +56,36 @@ export const Login = () => {
                             aria-label="Enter your email address"
                             type="text"
                             placeholder="Email address"
-                            className="test-sm text-gray-base w-full mr-3 py-5 px-4 h-2 border border-gray-primary rounded mb-2"
-                            onChange={({ target }) =>
-                                setEmailAddress(target.value)
-                            }
+                            className="text-sm text-gray-base w-full mr-3 py-5 px-4 h-2 border border-gray-primary rounded mb-2"
+                            onChange={({ target }) => setEmail(target.value)}
+                            value={email}
                         />
                         <input
                             aria-label="Enter your password"
                             type="password"
                             placeholder="Password"
-                            className="test-sm text-gray-base w-full mr-3 py-5 px-4 h-2 border border-gray-primary rounded mb-2"
+                            className="text-sm text-gray-base w-full mr-3 py-5 px-4 h-2 border border-gray-primary rounded mb-2"
                             onChange={({ target }) => setPassword(target.value)}
+                            value={password}
                         />
                         <button
                             disabled={isInvalid}
                             type="submit"
-                            className={`bg-blue-medium text-white w-full rounded h-8
-                        font-bold ${isInvalid && " opacity-50"}`}
+                            className={`bg-blue-medium text-white w-full rounded h-8 font-bold
+                ${isInvalid && "opacity-50"}`}
                         >
-                            Log In
+                            Login
                         </button>
                     </form>
                 </div>
-                <div className="flex justify-center items-center flex-col w-full bg-white p-4 border border-gray-primary rounded">
+                <div className="flex justify-center items-center flex-col w-full bg-white p-4 rounded border border-gray-primary">
                     <p className="text-sm">
-                        Don't have an account?
+                        Don't have an account?{` `}
                         <Link
                             to="/register"
                             className="font-bold text-blue-medium ml-1"
                         >
-                            Sign Up
+                            Sign up
                         </Link>
                     </p>
                 </div>

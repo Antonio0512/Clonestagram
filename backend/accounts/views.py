@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model, authenticate
+
 from rest_framework import status, permissions
 from rest_framework.authtoken.models import Token
 
@@ -17,27 +18,11 @@ class UserRegisterApiView(CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        if request.data["password"] != request.data["password2"]:
-            return Response(
-                {"error": "Passwords do not match."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        user = User(
-            username=serializer.validated_data["username"],
-            email=serializer.validated_data["email"]
-        )
-
-        user.set_password(serializer.validated_data["password"])
-        user.save()
-
-        return Response(
-            {"message": "User created successfully"},
-            status=status.HTTP_201_CREATED
-        )
-
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
 class UserLoginApiView(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -52,7 +37,7 @@ class UserLoginApiView(APIView):
             user = authenticate(request, email=email, password=password)
 
             if user:
-                token, created = Token.objects.get_or_create(user=user)
+                token, _ = Token.objects.get_or_create(user=user)
                 return Response({'token': token.key}, status=status.HTTP_200_OK)
             else:
                 return Response({'error': 'Email and password do not match'},
