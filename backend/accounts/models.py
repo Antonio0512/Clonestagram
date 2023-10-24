@@ -5,7 +5,7 @@ from .validators import email_validator, username_length_validator, username_reg
 class UserProfile(AbstractUser):
     username = models.CharField(unique=True, max_length=50, validators=[username_regex_validator, username_length_validator])
     email = models.CharField(unique=True, max_length=50, validators=[email_validator])
-    image = models.ImageField(upload_to="profile_pics/", null=True)
+    image = models.ImageField(upload_to="profile_pics/", null=True, blank=True)
     first_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
     bio = models.CharField(max_length=300, null=True, blank=True)
