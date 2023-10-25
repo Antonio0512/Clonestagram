@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Timeline } from "../components/Timeline";
 import { Header } from "../components/Header";
-import { Sidebar } from "../components/Sidebar";
+import { Sidebar } from "../components/sidebar/Sidebar";
 
 export const Dashboard = () => {
     useEffect(() => {

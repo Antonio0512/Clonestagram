@@ -1,5 +1,7 @@
 export const Timeline = () => {
     return (
-        <p> hello fro mtimeline</p>
-    )
+        <div className="container col-span-2">
+            <p>I am the timeline</p>
+        </div>
+    );
 };

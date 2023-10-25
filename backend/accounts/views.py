@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model, authenticate
 from rest_framework import status, permissions
 from rest_framework.authtoken.models import Token
 
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -52,3 +52,7 @@ class UserLoginApiView(APIView):
                                 status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserGetAllApiView(ListAPIView):
+    queryset = User.objects.all()[:10]
+    serializer_class = UserProfileSerializer

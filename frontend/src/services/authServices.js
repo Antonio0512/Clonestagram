@@ -35,3 +35,17 @@ export const register = async (credentials) => {
         throw error;
     }
 };
+
+export const getAll = async (userId, token) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/api/accounts`, {
+            headers: {
+                Authorization: `Token ${token}`,
+                "Content-Type": "application/json",
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
