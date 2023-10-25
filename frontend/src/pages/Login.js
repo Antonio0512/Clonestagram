@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { REGISTER } from "../helpers/routes";
+import { DASHBOARD, REGISTER } from "../helpers/routes";
 import { UserContext } from "../contexts/userContext";
 
 export const Login = () => {
@@ -18,7 +18,7 @@ export const Login = () => {
 
         try {
             await userLogin({ email, password });
-            navigate("/register");
+            navigate("/");
         } catch (error) {
             setEmail("");
             setPassword("");

@@ -7,7 +7,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import UserRegisterSerializer, UserLoginSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer, UserProfileSerializer
 
 User = get_user_model()
 
@@ -38,7 +38,15 @@ class UserLoginApiView(APIView):
 
             if user:
                 token, _ = Token.objects.get_or_create(user=user)
-                return Response({'token': token.key}, status=status.HTTP_200_OK)
+
+                user_data = UserProfileSerializer(user).data
+
+                response_data = {
+                    'user': user_data,
+                    'token': token.key
+                }
+
+                return Response(response_data, status=status.HTTP_200_OK)
             else:
                 return Response({'error': 'Email and password do not match'},
                                 status=status.HTTP_400_BAD_REQUEST)

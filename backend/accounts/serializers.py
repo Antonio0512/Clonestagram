@@ -32,8 +32,8 @@ class UserLoginSerializer(serializers.Serializer):
     email = serializers.CharField()
     password = serializers.CharField(write_only=True)
 
-    def create(self, validated_data):
-        pass
 
-    def update(self, instance, validated_data):
-        pass
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'bio', 'location', 'url')

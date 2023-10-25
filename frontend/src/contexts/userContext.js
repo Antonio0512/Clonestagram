@@ -5,7 +5,7 @@ import * as authService from "../services/authServices";
 export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
-    const [user, setUser] = useLocalStorage("user", {});
+    const [user, setUser] = useLocalStorage("auth", null);
 
     const userRegister = async (credentials) => {
         try {
@@ -24,14 +24,16 @@ export const UserProvider = ({ children }) => {
         }
     };
 
-    // const logout = () => {
-        // setUser({});
-    // };
-
+    const userLogout = () => {
+        setUser(null);
+    };
+    
     const userContextData = {
-        user,
+        user: user?.user,
+        isAuthenticated: user?.token,   
         userRegister,
         userLogin,
+        userLogout,
     };
 
     return (
