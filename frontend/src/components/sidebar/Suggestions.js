@@ -24,7 +24,7 @@ export const Suggestions = ({ userId, token }) => {
             </div>
             <div className="mt-4 grid gap-5">
                 {suggestedUsers?.map((user) => (
-                    <SuggestedUser key={user.id} userData={user} />
+                    <SuggestedUser key={user.id} loggedInUserId={userId} userData={user} token={token} />
                 ))}
             </div>
         </div>

@@ -33,7 +33,7 @@ class UserProfile(AbstractUser):
         """
         Check if the current user is following the specified user.
         """
-        return user in self.following.all()
+        return user in self.followers.all()
     
     def is_followed_by(self, user):
         """
