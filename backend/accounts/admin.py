@@ -12,4 +12,5 @@ class UserAdmin(admin.ModelAdmin):
         ('Personal info', {'fields': ('bio', 'image')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
+        ('Followers', {'fields': ('followers', )})
     )

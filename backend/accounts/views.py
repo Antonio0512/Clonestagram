@@ -53,6 +53,13 @@ class UserLoginApiView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UserGetAllApiView(ListAPIView):
-    queryset = User.objects.all()[:10]
+class UserGetSuggestedApiView(ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UserProfileSerializer
+
+    def get_queryset(self):
+        logged_in_user = self.request.user
+
+        all_users = User.objects.exclude(id=logged_in_user.id)[:60]
+        return [user for user in all_users if not logged_in_user.is_following(user)][:10]
+
