@@ -86,10 +86,10 @@ export const unfollowUser = async (userId, targetUserId, token) => {
     }
 };
 
-export const followingState = async (userId, targetUserId, token) => {
+export const getFollowedUsers = async (token) => {
     try {
         const response = await axios.get(
-            `${BASE_URL}/api/accounts/${userId}/following-state/${targetUserId}`,
+            `${BASE_URL}/api/accounts/followed-users`,
             {
                 headers: {
                     Authorization: `Token ${token}`,

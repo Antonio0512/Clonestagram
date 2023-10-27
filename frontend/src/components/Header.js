@@ -70,21 +70,17 @@ export const Header = () => {
                                         />
                                     </svg>
                                 </button>
-                                {/* {user && (
+                                {user && (
                                     <div className="flex items-center cursor-pointer">
                                         <Link to={`/p/${user?.username}`}>
                                             <img
                                                 className="rounded-full h-8 w-8 flex"
-                                                src={`/images/avatars/${user?.username}.jpg`}
+                                                src={`/images/avatars/default.png`}
                                                 alt={`${user?.username} profile`}
-                                                onError={(e) => {
-                                                    e.target.src =
-                                                        DEFAULT_IMAGE_PATH;
-                                                }}
                                             />
                                         </Link>
                                     </div>
-                                )} */}
+                                )}
                             </>
                         ) : (
                             <>
