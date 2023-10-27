@@ -12,7 +12,7 @@ class UserProfile(AbstractUser):
     location = models.CharField(max_length=100, null=True, blank=True)
     url = models.URLField(max_length=200, null=True, blank=True)
 
-    followers = models.ManyToManyField('self', related_name='following', symmetrical=False, blank=True)
+    following = models.ManyToManyField('self', related_name='followers', symmetrical=False, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ["username"]
@@ -21,25 +21,25 @@ class UserProfile(AbstractUser):
         """
         Add a user to the followers list.
         """
-        self.followers.add(user)
+        self.following.add(user)
 
     def unfollow(self, user):
         """
         Remove a user from the followers list.
         """
-        self.followers.remove(user)
+        self.following.remove(user)
 
     def is_following(self, user):
         """
         Check if the current user is following the specified user.
         """
-        return user in self.followers.all()
+        return user in self.following.all()
     
     def is_followed_by(self, user):
         """
         Check if the current user is followed by the specified user.
         """
-        return user in self.followers.all()
+        return user in self.following.all()
 
     def __str__(self):
         return self.email
