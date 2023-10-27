@@ -1,24 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
     followUser,
-    followingState,
     unfollowUser,
 } from "../../services/authServices";
 
 export const SuggestedUser = ({ loggedInUserId, userData, token }) => {
     const [isFollowing, setIsFollowing] = useState(false);
-
-    useEffect(() => {
-        const checkFollowingStatus = async () => {
-            try {
-                await followingState(loggedInUserId, userData.id, token);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        checkFollowingStatus();
-    }, [token, loggedInUserId, userData.id]);
 
     const handleFollow = async () => {
         try {

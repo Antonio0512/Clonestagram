@@ -60,10 +60,8 @@ class UserGetSuggestedApiView(ListAPIView):
     def get_queryset(self):
         logged_in_user = self.request.user
 
-        all_users = User.objects.exclude(id=logged_in_user.id)[:60]
-        return [user for user in all_users if not logged_in_user.is_following(user)][:10]
-
-
+        suggested_users = User.objects.exclude(id=logged_in_user.id)[:100]
+        return [user for user in suggested_users if not logged_in_user.is_following(user)]
 
 class UserFollowApiView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -99,15 +97,15 @@ class UserUnfollowApiView(APIView):
         return Response({'success': 'User followed successfully'}, status=status.HTTP_200_OK)
 
 
-class UserFollowingStateApiView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
+# class UserFollowingStateApiView(APIView):
+#     permission_classes = (permissions.IsAuthenticated,)
 
-    def get(self, request, user_id, target_user_id):
-        try:
-            user = User.objects.get(id=user_id)
-            target_user = User.objects.get(id=target_user_id)
-        except User.DoesNotExist:
-            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+#     def get(self, request, user_id, target_user_id):
+#         try:
+#             user = User.objects.get(id=user_id)
+#             target_user = User.objects.get(id=target_user_id)
+#         except User.DoesNotExist:
+#             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        is_following = user.is_following(target_user)
-        return Response({'is_following': is_following}, status=status.HTTP_200_OK)
+#         is_following = user.is_following(target_user)
+#         return Response({'is_following': is_following}, status=status.HTTP_200_OK)
