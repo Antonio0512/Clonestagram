@@ -64,7 +64,7 @@ export const Timeline = () => {
             <hr className="mb-5" />
 
             {posts?.map((post) => (
-                <Post key={post.id} userData={post.user} postData={post} />
+                <Post key={post.id} userData={post.user} postData={post} token={token} />
             ))}
         </div>
     );

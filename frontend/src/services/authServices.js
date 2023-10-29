@@ -53,10 +53,27 @@ export const getSuggestedUsers = async (token) => {
     }
 };
 
+export const getFollowedUsers = async (token) => {
+    try {
+        const response = await axios.get(
+            `${BASE_URL}/api/accounts/followed-users`,
+            {
+                headers: {
+                    Authorization: `Token ${token}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const followUser = async (userId, targetUserId, token) => {
     try {
         await axios.post(
-            `${BASE_URL}/api/accounts/${userId}/follow/${targetUserId}`,
+            `${BASE_URL}/api/accounts/${userId}/follow-unfollow/${targetUserId}`,
             {},
             {
                 headers: {
@@ -73,7 +90,7 @@ export const followUser = async (userId, targetUserId, token) => {
 export const unfollowUser = async (userId, targetUserId, token) => {
     try {
         await axios.delete(
-            `${BASE_URL}/api/accounts/${userId}/unfollow/${targetUserId}`,
+            `${BASE_URL}/api/accounts/${userId}/follow-unfollow/${targetUserId}`,
             {
                 headers: {
                     Authorization: `Token ${token}`,
@@ -86,10 +103,11 @@ export const unfollowUser = async (userId, targetUserId, token) => {
     }
 };
 
-export const getFollowedUsers = async (token) => {
+export const likePost = async (userId, postId, token) => {
     try {
-        const response = await axios.get(
-            `${BASE_URL}/api/accounts/followed-users`,
+        await axios.post(
+            `${BASE_URL}/api/accounts/${userId}/like-dislike/${postId}`,
+            {},
             {
                 headers: {
                     Authorization: `Token ${token}`,
@@ -97,7 +115,22 @@ export const getFollowedUsers = async (token) => {
                 },
             }
         );
-        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const unlikePost = async (userId, postId, token) => {
+    try {
+        await axios.delete(
+            `${BASE_URL}/api/accounts/${userId}/like-dislike/${postId}`,
+            {
+                headers: {
+                    Authorization: `Token ${token}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
     } catch (error) {
         throw error;
     }
