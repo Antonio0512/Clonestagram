@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model, authenticate
+from django.shortcuts import get_object_or_404
 
 from rest_framework import status, permissions
 from rest_framework.authtoken.models import Token
@@ -7,7 +8,9 @@ from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserProfileSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer, UserProfileSerializer, LikeSerializer
+
+from posts.models import Post, Like
 
 User = get_user_model()
 
@@ -76,35 +79,51 @@ class UserGetFollowedApiView(ListAPIView):
 
 
 
-class UserFollowApiView(APIView):
+class UserFollowUnfollowApiView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, user_id, target_user_id):
-        try:
-            user = User.objects.get(id=user_id)
-            target_user = User.objects.get(id=target_user_id)
-        except User.DoesNotExist:
-            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        
+        user = get_object_or_404(User, id=user_id)
+        target_user = get_object_or_404(User, id=target_user_id)
+
         if user.is_following(target_user):
             return Response({'error': f"You are already following {target_user.username}"}, status=status.HTTP_400_BAD_REQUEST)
 
         user.follow(target_user)
         return Response({'success': 'User followed successfully'}, status=status.HTTP_201_CREATED)
-    
-
-class UserUnfollowApiView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
 
     def delete(self, request, user_id, target_user_id):
-        try:
-            user = User.objects.get(id=user_id)
-            target_user = User.objects.get(id=target_user_id)
-        except User.DoesNotExist:
-            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        
+        user = get_object_or_404(User, id=user_id)
+        target_user = get_object_or_404(User, id=target_user_id)
+
         if not user.is_following(target_user):
             return Response({'error': f"You are not following {target_user.username}"}, status=status.HTTP_400_BAD_REQUEST)
 
         user.unfollow(target_user)
-        return Response({'success': 'User followed successfully'}, status=status.HTTP_200_OK)
+        return Response({'success': 'User unfollowed successfully'}, status=status.HTTP_200_OK)
+    
+
+
+class UserLikeOrDislikePost(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, user_id, post_id):
+        user = get_object_or_404(User, id=user_id)
+        post = get_object_or_404(Post, id=post_id)
+
+        if Like.objects.filter(user=user, post=post).exists():
+            return Response({'error': 'You have already liked this post'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            Like.objects.create(user=user, post=post)
+            return Response({'success': 'Post liked successfully'}, status=status.HTTP_201_CREATED)
+
+    def delete(self, request, user_id, post_id):
+        print(user_id)
+        user = get_object_or_404(User, id=user_id)
+        post = get_object_or_404(Post, id=post_id)
+        try:
+            like = Like.objects.get(user=user, post=post)
+            like.delete()
+            return Response({'success': 'Post unliked successfully'}, status=status.HTTP_200_OK)
+        except Like.DoesNotExist:
+            return Response({'error': 'You have not liked this post'}, status=status.HTTP_400_BAD_REQUEST)

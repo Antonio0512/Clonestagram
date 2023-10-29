@@ -1,7 +1,8 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-from .models import Post
+from .models import Post, Like
+
 User = get_user_model()
 
 class UserSerializer(ModelSerializer):
@@ -10,13 +11,15 @@ class UserSerializer(ModelSerializer):
         fields = ['id', 'username', 'email'] 
 
 class PostSerializer(ModelSerializer):
-    user = UserSerializer()
+    user = UserSerializer() 
 
     time_since_posted = SerializerMethodField()
+    liked = SerializerMethodField()
+
 
     class Meta:
         model = Post
-        fields = ('id', 'user', 'caption', 'image', 'created_at', 'time_since_posted', 'likes', 'comments')
+        fields = ('id', 'user', 'caption', 'image', 'created_at', 'time_since_posted', 'likes', 'comments', 'liked')
 
     def get_time_since_posted(self, obj):
         now = timezone.now()
@@ -35,3 +38,7 @@ class PostSerializer(ModelSerializer):
             return f"{minutes} minutes ago"
         else:
             return "Just now"
+        
+    def get_liked(self, obj):
+            user = self.context['request'].user
+            return Like.objects.filter(user=user, post=obj).exists()

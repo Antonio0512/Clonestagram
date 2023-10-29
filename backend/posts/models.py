@@ -11,6 +11,9 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True, through='Like')
     comments = models.ManyToManyField(User, related_name='commented_posts', blank=True, through='Comment')
 
+    def __str__(self) -> str:
+        return self.caption[:15]
+
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

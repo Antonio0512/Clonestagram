@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
-from django.db import IntegrityError
 from rest_framework import serializers
 from .validators import password_validator
+from posts.models import Like
 
 User = get_user_model()
 
@@ -37,3 +37,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'first_name', 'last_name', 'image', 'bio', 'location', 'url')
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    model = Like
+    fields = '__all__'
