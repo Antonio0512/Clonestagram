@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .validators import password_validator
-from posts.models import Like
+from posts.models import Comment
 
 User = get_user_model()
 
@@ -39,6 +39,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email', 'first_name', 'last_name', 'image', 'bio', 'location', 'url')
 
 
-class LikeSerializer(serializers.ModelSerializer):
-    model = Like
-    fields = '__all__'
+class CommentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = "__all__"

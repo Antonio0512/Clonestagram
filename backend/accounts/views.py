@@ -8,7 +8,8 @@ from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserProfileSerializer, LikeSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer, UserProfileSerializer, CommentCreateSerializer
+from posts.serializers import CommentSerializer
 
 from posts.models import Post, Like
 
@@ -104,7 +105,7 @@ class UserFollowUnfollowApiView(APIView):
     
 
 
-class UserLikeOrDislikePost(APIView):
+class UserLikeOrDislikePostApiView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, user_id, post_id):
@@ -118,7 +119,6 @@ class UserLikeOrDislikePost(APIView):
             return Response({'success': 'Post liked successfully'}, status=status.HTTP_201_CREATED)
 
     def delete(self, request, user_id, post_id):
-        print(user_id)
         user = get_object_or_404(User, id=user_id)
         post = get_object_or_404(Post, id=post_id)
         try:
@@ -127,3 +127,24 @@ class UserLikeOrDislikePost(APIView):
             return Response({'success': 'Post unliked successfully'}, status=status.HTTP_200_OK)
         except Like.DoesNotExist:
             return Response({'error': 'You have not liked this post'}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class UserCommentPostApiView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, user_id, post_id):
+        user = get_object_or_404(User, id=user_id)
+        post = get_object_or_404(Post, id=post_id)
+
+        comment_data = request.data
+        comment_data['user'] = user.id
+        comment_data['post'] = post.id
+    
+        serializer = CommentCreateSerializer(data=comment_data)
+
+        if serializer.is_valid():
+            comment = serializer.save()   
+            comment_serializer = CommentSerializer(comment) 
+            return Response(comment_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

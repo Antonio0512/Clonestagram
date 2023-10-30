@@ -22,7 +22,7 @@ export const login = async (credentials) => {
 export const register = async (credentials) => {
     try {
         const response = await axios.post(
-            `${BASE_URL}/api/accounts`,
+            `${BASE_URL}/api/accounts/register`,
             JSON.stringify(credentials),
             {
                 headers: {

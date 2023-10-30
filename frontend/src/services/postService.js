@@ -30,11 +30,29 @@ export const getFollowingPosts = async (token) => {
     }
 };
 
-export const likePost = async (userId, postId, token) => {
+// export const likePost = async (userId, postId, token) => {
+//     try {
+//         const response = await axios.post(
+//             `${BASE_URL}/api/users/${userId}/like-dislike/${postId}`,
+//             {},
+//             {
+//                 headers: {
+//                     Authorization: `Token ${token}`,
+//                     "Content-Type": "application/json",
+//                 },
+//             }
+//         );
+//         return response.data;
+//     } catch (error) {
+//         throw error;
+//     }
+// };
+
+export const commentPost = async (userId, postId, comment, token) => {
     try {
         const response = await axios.post(
-            `${BASE_URL}/api/users/${userId}/like-dislike/${postId}`,
-            {},
+            `${BASE_URL}/api/accounts/${userId}/comment/${postId}`,
+            { text: comment },
             {
                 headers: {
                     Authorization: `Token ${token}`,

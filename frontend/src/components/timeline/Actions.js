@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { likePost, unlikePost } from "../../services/authServices";
 
-export const Actions = ({ userData, postData, token }) => {
+export const Actions = ({ userData, postData, token, handleFocus }) => {
     const [isLiked, setIsLiked] = useState(postData.liked);
     const [likes, setLikes] = useState(postData.likes.length);
 
@@ -55,6 +55,12 @@ export const Actions = ({ userData, postData, token }) => {
                         />
                     </svg>
                     <svg
+                        onClick={handleFocus}
+                        onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                                handleFocus();
+                            }
+                        }}
                         className="w-8 text-black-light select-none cursor-pointer focus:outline-none"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

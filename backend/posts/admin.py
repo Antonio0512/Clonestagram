@@ -3,7 +3,7 @@ from .models import Post, Like, Comment
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('user', 'caption', 'created_at')
+    list_display = ('id', 'user', 'caption', 'created_at')
     list_filter = ('created_at', 'user')
     search_fields = ('caption',)
     readonly_fields = ('created_at',)

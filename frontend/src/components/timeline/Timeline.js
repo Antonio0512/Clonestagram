@@ -4,7 +4,7 @@ import { UserContext } from "../../contexts/userContext";
 import { getAllPosts, getFollowingPosts } from "../../services/postService";
 
 export const Timeline = () => {
-    const { token } = useContext(UserContext);
+    const { token, user } = useContext(UserContext);
     const [isForYouButtonActive, setIsForYouButtonActive] = useState(true);
     const [posts, setPosts] = useState(null);
 
@@ -39,6 +39,7 @@ export const Timeline = () => {
         };
         fetchUsers();
     }, [token]);
+
     return (
         <div className="container col-span-2">
             <div className="flex mb-3">
@@ -64,7 +65,7 @@ export const Timeline = () => {
             <hr className="mb-5" />
 
             {posts?.map((post) => (
-                <Post key={post.id} userData={post.user} postData={post} token={token} />
+                <Post key={post.id} userData={post.user} postData={post} token={token} currentUser={user}/>
             ))}
         </div>
     );
