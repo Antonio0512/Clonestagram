@@ -65,7 +65,13 @@ export const Timeline = () => {
             <hr className="mb-5" />
 
             {posts?.map((post) => (
-                <Post key={post.id} userData={post.user} postData={post} token={token} currentUser={user}/>
+                <Post
+                    key={post.id}
+                    userData={post.user}
+                    postData={post}
+                    token={token}
+                    currentUser={user}
+                />
             ))}
         </div>
     );

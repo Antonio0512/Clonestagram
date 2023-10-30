@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { likePost, unlikePost } from "../../services/authServices";
 
-export const Actions = ({ userData, postData, token, handleFocus }) => {
+export const Actions = ({ currentUser, postData, token, handleFocus }) => {
     const [isLiked, setIsLiked] = useState(postData.liked);
     const [likes, setLikes] = useState(postData.likes.length);
 
     const handleLike = async () => {
         try {
-            await likePost(userData.id, postData.id, token);
+            await likePost(currentUser.id, postData.id, token);
             setIsLiked(true);
             setLikes((likes) => likes + 1);
         } catch (error) {
@@ -17,7 +17,7 @@ export const Actions = ({ userData, postData, token, handleFocus }) => {
 
     const handleUnlike = async () => {
         try {
-            await unlikePost(userData.id, postData.id, token);
+            await unlikePost(currentUser.id, postData.id, token);
             setIsLiked(false);
             setLikes((likes) => likes - 1);
         } catch (error) {

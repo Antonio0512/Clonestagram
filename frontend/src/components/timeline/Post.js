@@ -18,7 +18,7 @@ export const Post = ({ userData, postData, token, currentUser }) => {
                 />
                 <Image src={postData.image} caption={postData.username} />
                 <Actions
-                    userData={userData}
+                    currentUser={currentUser}
                     postData={postData}
                     token={token}
                     handleFocus={handleFocus}
