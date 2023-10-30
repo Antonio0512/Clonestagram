@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export const User = ({ user }) => {
     return (
         <Link
-            to={`/profile/${user.username}`}
+            to={`/profile/${user.id}`}
             className="grid grid-cols-4 gap-4 mb-6 items-center"
         >
             <div className="flex items-center justify-between col-span-1">

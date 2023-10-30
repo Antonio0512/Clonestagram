@@ -70,6 +70,20 @@ export const getFollowedUsers = async (token) => {
     }
 };
 
+export const getUser = async (userId, token) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/api/accounts/${userId}`, {
+            headers: {
+                Authorization: `Token ${token}`,
+                "Content-Type": "application/json",
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const followUser = async (userId, targetUserId, token) => {
     try {
         await axios.post(

@@ -18,7 +18,7 @@ export const Login = () => {
 
         try {
             await userLogin({ email, password });
-            navigate("/");
+            navigate(DASHBOARD);
         } catch (error) {
             setEmail("");
             setPassword("");

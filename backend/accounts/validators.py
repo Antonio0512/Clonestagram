@@ -11,7 +11,7 @@ def username_regex_validator(value):
 
 
 def username_length_validator(value):
-    if not len(value) >= 6:
+    if not len(value) >= 3:
         raise ValidationError("Username must be at least 6 characters long")
  
     return value

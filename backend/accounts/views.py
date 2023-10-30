@@ -4,9 +4,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status, permissions
 from rest_framework.authtoken.models import Token
 
-from rest_framework.generics import CreateAPIView, ListAPIView
-from rest_framework.response import Response
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserProfileSerializer, CommentCreateSerializer
 from posts.serializers import CommentSerializer
@@ -148,3 +148,12 @@ class UserCommentPostApiView(APIView):
             return Response(comment_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class UserGetByIdApiView(RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UserProfileSerializer
+
+    def get_object(self):
+        user_id = self.kwargs.get("user_id")
+        return get_object_or_404(User, id=user_id)

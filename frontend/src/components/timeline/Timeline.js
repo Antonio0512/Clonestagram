@@ -1,10 +1,8 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Post } from "./Post";
-import { UserContext } from "../../contexts/userContext";
 import { getAllPosts, getFollowingPosts } from "../../services/postService";
 
-export const Timeline = () => {
-    const { token, user } = useContext(UserContext);
+export const Timeline = ({token, user}) => {
     const [isForYouButtonActive, setIsForYouButtonActive] = useState(true);
     const [posts, setPosts] = useState(null);
 

@@ -1,12 +1,8 @@
-import { useContext } from "react";
-import { UserContext } from "../contexts/userContext";
 import { Link, useNavigate } from "react-router-dom";
-import { DASHBOARD, REGISTER, LOGIN } from "../helpers/routes";
+import { DASHBOARD, LOGIN } from "../helpers/routes";
 
-export const Header = () => {
+export const Header = ({ user, userLogout, isAuthenticated }) => {
     const navigate = useNavigate();
-
-    const { user, userLogout, isAuthenticated } = useContext(UserContext);
 
     const handleLogout = () => {
         userLogout();
@@ -72,11 +68,11 @@ export const Header = () => {
                                 </button>
                                 {user && (
                                     <div className="flex items-center cursor-pointer">
-                                        <Link to={`/p/${user?.username}`}>
+                                        <Link to={`/profile/${user?.id}`}>
                                             <img
                                                 className="rounded-full h-8 w-8 flex"
                                                 src={`/images/avatars/default.png`}
-                                                alt={`${user?.username} profile`}
+                                                alt={`${user.username} profile`}
                                             />
                                         </Link>
                                     </div>
