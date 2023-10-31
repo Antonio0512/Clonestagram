@@ -3,18 +3,20 @@ import { useParams } from "react-router-dom";
 import { getUser } from "../services/authServices";
 import { UserContext } from "../contexts/userContext";
 
-import { Header } from "../components/profile/Header";
+import { Header } from "../components/Header";
+
+import { UserProfile } from "../components/profile/Index";
 
 export const Profile = () => {
-    const { token } = useContext(UserContext);
+    const { token, user } = useContext(UserContext);
     const { userId } = useParams();
 
-    const [user, setUser] = useState(null);
+    const [targetUser, setTargetUser] = useState(null);
 
     useEffect(() => {
         const fetchUser = async () => {
             const userData = await getUser(userId, token);
-            setUser(userData);
+            setTargetUser(userData);
         };
         fetchUser();
     }, [token, userId]);
@@ -22,9 +24,15 @@ export const Profile = () => {
     return (
         <div className="bg-gray-background">
             <Header />
-            {/* <div className="mx-auto max-w-screen-lg"> */}
-            {/* <UserProfile user={user} /> */}
-            {/* </div> */}
+            <div className="mx-auto max-w-screen-lg">
+                {targetUser && (
+                    <UserProfile
+                        user={user}
+                        targetUser={targetUser}
+                        token={token}
+                    />
+                )}
+            </div>
         </div>
     );
 };

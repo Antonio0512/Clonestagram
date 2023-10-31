@@ -8,7 +8,7 @@ from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserProfileSerializer, CommentCreateSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer, UserProfileWithPostsSerializer, CommentCreateSerializer, UserProfileSerializer
 from posts.serializers import CommentSerializer
 
 from posts.models import Post, Like
@@ -43,7 +43,7 @@ class UserLoginApiView(APIView):
             if user:
                 token, _ = Token.objects.get_or_create(user=user)
 
-                user_data = UserProfileSerializer(user).data
+                user_data = UserProfileWithPostsSerializer(user).data
 
                 response_data = {
                     'user': user_data,
@@ -74,9 +74,8 @@ class UserGetFollowedApiView(ListAPIView):
 
     def get_queryset(self):
         logged_in_user = self.request.user
-
-        followed_users = User.objects.all()
-        return [user for user in followed_users if logged_in_user.is_following(user)]
+        return logged_in_user.following.all()
+    
 
 
 
@@ -152,7 +151,7 @@ class UserCommentPostApiView(APIView):
 
 class UserGetByIdApiView(RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = UserProfileSerializer
+    serializer_class = UserProfileWithPostsSerializer
 
     def get_object(self):
         user_id = self.kwargs.get("user_id")

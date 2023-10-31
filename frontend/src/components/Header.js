@@ -1,8 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { DASHBOARD, LOGIN } from "../helpers/routes";
+import { useContext } from "react";
+import { UserContext } from "../contexts/userContext";
 
-export const Header = ({ user, userLogout, isAuthenticated }) => {
+export const Header = () => {
     const navigate = useNavigate();
+    const { user, userLogout, isAuthenticated } = useContext(UserContext);
 
     const handleLogout = () => {
         userLogout();

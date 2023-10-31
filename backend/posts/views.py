@@ -1,10 +1,10 @@
 from rest_framework.generics import ListAPIView
 from rest_framework import permissions
-from .serializers import PostSerializer
+from .serializers import PostSerializerWithUsersAndComments
 from .models import Post
 
 class PostsGetAllApiView(ListAPIView):
-    serializer_class = PostSerializer
+    serializer_class = PostSerializerWithUsersAndComments
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
@@ -12,7 +12,7 @@ class PostsGetAllApiView(ListAPIView):
     
 
 class PostsGetFollowingApiView(ListAPIView):
-    serializer_class = PostSerializer
+    serializer_class = PostSerializerWithUsersAndComments
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):

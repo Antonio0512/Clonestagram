@@ -39,7 +39,7 @@ export const SuggestedUser = ({ loggedInUserId, userData, token }) => {
                 </Link>
             </div>
             <div>
-                {isFollowing === false ? (
+                {!isFollowing ? (
                     <button
                         className="text-xs font-bold text-blue-medium"
                         type="button"
