@@ -5,7 +5,7 @@ import { Sidebar } from "../components/sidebar/Sidebar";
 import { UserContext } from "../contexts/userContext";
 
 export const Dashboard = () => {
-    const { token, user, userLogout, isAuthenticated } =
+    const { token, user } =
         useContext(UserContext);
 
     useEffect(() => {

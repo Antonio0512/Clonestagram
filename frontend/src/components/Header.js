@@ -74,7 +74,9 @@ export const Header = () => {
                                             <img
                                                 className="rounded-full h-8 w-8 flex"
                                                 src={
-                                                    IMAGE_URL + user.image || DEFAULT_IMAGE
+                                                    user.image
+                                                        ? IMAGE_URL + user.image
+                                                        : DEFAULT_IMAGE
                                                 }
                                                 alt={`${user.username} profile`}
                                             />
