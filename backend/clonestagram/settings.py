@@ -8,6 +8,8 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 PARENT_DIR = BASE_DIR.parent
 
+BASE_URL = "http://localhost:8000"
+
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = os.environ.get("DEBUG")

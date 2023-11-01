@@ -1,12 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { DASHBOARD, LOGIN } from "../helpers/routes";
+import { DASHBOARD, DEFAULT_IMAGE, LOGIN, IMAGE_URL } from "../helpers/routes";
 import { useContext } from "react";
 import { UserContext } from "../contexts/userContext";
 
 export const Header = () => {
     const navigate = useNavigate();
     const { user, userLogout, isAuthenticated } = useContext(UserContext);
-
     const handleLogout = () => {
         userLogout();
         navigate("/login");
@@ -74,7 +73,9 @@ export const Header = () => {
                                         <Link to={`/profile/${user?.id}`}>
                                             <img
                                                 className="rounded-full h-8 w-8 flex"
-                                                src={`/images/avatars/default.png`}
+                                                src={
+                                                    IMAGE_URL + user.image || DEFAULT_IMAGE
+                                                }
                                                 alt={`${user.username} profile`}
                                             />
                                         </Link>

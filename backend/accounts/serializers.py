@@ -41,14 +41,21 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email', 'first_name', 'last_name', 'image', 'bio', 'location', 'url')
 
 
+class FollowingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'image')
+
 
 class UserProfileWithPostsSerializer(serializers.ModelSerializer):
     posts = serializers.SerializerMethodField()
     is_followed = serializers.SerializerMethodField()
+    followers = serializers.SerializerMethodField()
+    following = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'image', 'bio', 'location', 'url', 'posts', 'is_followed')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'image', 'bio', 'location', 'url', 'posts', 'is_followed', 'followers', 'following')
 
     def get_posts(self, obj):
         user_posts = Post.objects.filter(user=obj)
@@ -60,6 +67,18 @@ class UserProfileWithPostsSerializer(serializers.ModelSerializer):
         if request and request.user.is_authenticated:
             return request.user.is_following(obj)
         return False
+
+    def get_followers(self, obj):
+        followers = obj.followers.all()
+        follower_profiles = FollowingSerializer(followers, many=True, context=self.context)
+
+        return follower_profiles.data
+
+    def get_following(self, obj):
+        following = obj.following.all()
+        following_profiles = FollowingSerializer(following, many=True, context=self.context)
+
+        return following_profiles.data
 
 
 class CommentCreateSerializer(serializers.ModelSerializer):

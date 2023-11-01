@@ -9,7 +9,7 @@ User = get_user_model()
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email') 
+        fields = ('id', 'username', 'email', 'image') 
 
 
 class CommentSerializer(ModelSerializer):
@@ -113,3 +113,4 @@ class PostSerializerWithUsersAndComments(ModelSerializer):
     def get_liked(self, obj):
             user = self.context['request'].user
             return Like.objects.filter(user=user, post=obj).exists()
+    

@@ -30,12 +30,8 @@ export const Header = ({ user, targetUser, token }) => {
             <div className="container flex justify-center items-center">
                 <img
                     className="rounded-full h-40 w-40 flex"
-                    src={
-                        targetUser.image
-                            ? `/media/${targetUser.image}`
-                            : DEFAULT_IMAGE
-                    }
-                    alt={`${targetUser.username} profile picture`}
+                    src={targetUser.image || DEFAULT_IMAGE}
+                    alt={`${targetUser.username}`}
                 />
             </div>
             <div className="flex items-center justify-center flex-col col-span-2">
@@ -70,21 +66,27 @@ export const Header = ({ user, targetUser, token }) => {
                     <>
                         <p className="mr-10">
                             <span className="font-bold">
-                                {user.posts?.length}
+                                {targetUser.posts?.length}
                             </span>{" "}
-                            photos
+                            posts
                         </p>
                         <p className="mr-10">
-                            <span className="font-bold">{50}</span> followers
+                            <span className="font-bold">
+                                {targetUser.followers.length}
+                            </span>{" "}
+                            followers
                         </p>
                         <p className="mr-10">
-                            <span className="font-bold">{30}</span> following
+                            <span className="font-bold">
+                                {targetUser.following.length}
+                            </span>{" "}
+                            following
                         </p>
                     </>
                 </div>
                 <div className="container mt-4">
                     <p className="font-medium">
-                        {targetUser.fullname || "Full Name"}
+                        {targetUser.first_name} {targetUser.last_name}
                     </p>
                 </div>
             </div>

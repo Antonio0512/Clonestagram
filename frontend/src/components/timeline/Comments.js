@@ -41,7 +41,7 @@ export const Comments = ({
                             }
                         }}
                     >
-                        View all {comments.length} comments
+                        View more
                     </button>
                 )}
                 <p className="text-gray-base uppercase text-xs mt-2">
