@@ -58,7 +58,8 @@ class PostSerializer(ModelSerializer):
         return comments_serializer.data
 
     def get_liked(self, obj):
-            user = self.context['request'].user
+        user = self.context['user']
+        if user.is_authenticated:
             return Like.objects.filter(user=user, post=obj).exists()
 
 

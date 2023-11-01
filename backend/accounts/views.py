@@ -43,7 +43,7 @@ class UserLoginApiView(APIView):
             if user:
                 token, _ = Token.objects.get_or_create(user=user)
 
-                user_data = UserProfileWithPostsSerializer(user).data
+                user_data = UserProfileWithPostsSerializer(user, context={'user': user}).data
 
                 response_data = {
                     'user': user_data,
@@ -156,3 +156,8 @@ class UserGetByIdApiView(RetrieveAPIView):
     def get_object(self):
         user_id = self.kwargs.get("user_id")
         return get_object_or_404(User, id=user_id)
+    
+    def get_serializer_context(self):
+        context =  super(UserGetByIdApiView, self).get_serializer_context()
+        context['user'] = self.request.user
+        return context

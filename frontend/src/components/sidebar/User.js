@@ -5,11 +5,11 @@ export const User = ({ user }) => {
     return (
         <Link
             to={`/profile/${user.id}`}
-            className="grid grid-cols-4 gap-4 mb-6 items-center"
+            className="grid grid-cols-4 gap-3 mb-6 items-center h-16"
         >
             <div className="flex items-center justify-between col-span-1">
                 <img
-                    className="rounded-full w-16 flex mr-3"
+                    className="rounded-full w-16 h-16"
                     src={
                         user.image
                             ? IMAGE_URL + user.image
