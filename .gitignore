@@ -159,5 +159,5 @@ cython_debug/
 node_modules/
 
 media/
-
+postgresql/
 staticfiles/
